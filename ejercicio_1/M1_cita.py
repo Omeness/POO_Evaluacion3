@@ -43,7 +43,8 @@ class Cita(Servicio):
     def confirmar(self, motivo, agenda):
         if self.estado == "creada":
             pass
-        # NOTE: que deberia poner en motivo y agenda :| se supone que asigno el servicio y despiues confirmo???
+        # NOTE: qué deberia poner en motivo y agenda?? :| se supone que asigno el servicio y despiues confirmo???
+        # i dont getit 
         # valida estado creada, servicio asignado y franja libre;
         # cambia a confirmada; registra evento
         
