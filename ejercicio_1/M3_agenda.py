@@ -1,31 +1,43 @@
-from M1_cita import Cita
 
 
 class Agenda:
     def __init__(self):
         self._citas = []
+        self._cita_solapada = None
+
+    @property
+    def cita_solapada(self):
+        return self._cita_solapada
 
     def existe_solape(self, profesional, inicio, fin) -> bool:
-        # Dos intervalos [A_inicio, A_fin) y [B_inicio, B_fin) se solapan si
-        # • A_inicio < B_fin y B_inicio < A_fin.
-        # verdadero si [inicio, fin) intersecta otro
-        # intervalo no cancelado del mismo profesional.
-        
-        return False
-    
-    def agregar(self, cita: Cita):
+        cita_solapada = None
+        for cita in self._citas:
+            if profesional == cita.profesional:
+                if inicio < cita.fin and cita.inicio < fin:
+                    cita_solapada = cita.id_cita
+        if cita_solapada is None:
+            return False
+        else:
+            self._cita_solapada = f"ID: {cita_solapada}"
+            return True
+                
+    def agregar(self, cita: object):
+        # NOTE: La validacion de solapamiento se hace desde Cita.confirmar()
+        # Aqui solo se valida que la cita este confirmada
+
+        if cita._estado != "confirmada":
+            raise Exception("La cita debe estar confirmada para agregarse")
         if cita.id_cita in [obj.id_cita for obj in self._citas]:
             raise Exception(f"La cita con ID: {cita.id_cita}  ya esta registrada")
-        
-        profesional = cita.profesional
-        inicio = cita.inicio
-        fin = cita.fin
 
-        if self.existe_solape(profesional, inicio, fin):
-            raise Exception("La cita se solapa con otra")
-        
         self._citas.append(cita)
         return "Cita agendada con exito"
+    
+    def ver_agenda(self):
+        print("\n--- AGENDA ---\n")
+        for cita in self._citas:
+            print(f"[ID: {cita.id_cita}] Desde: {cita.inicio.strftime("%H:%M")} hrs."
+                  f" Hasta: {cita.fin.strftime("%H:%M")} hrs. | "
+                  f"Profesional: {cita.profesional} - Servicio: {cita.servicio}")
 
-        # valida id único y ausencia de solape; incorpora la cita
 

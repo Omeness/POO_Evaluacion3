@@ -1,22 +1,60 @@
 from datetime import datetime, timedelta
-from typing import Optional
-
 
 
 class Test:
-    def __init__(self, num_id):
+    def __init__(self,nn, num_id, ini, fin):
+        self.nn = nn
         self.num_id = num_id
+        self.ini =ini
+        self.fin = fin
+        self.lt = []
 
+    def solape(self, item):
+        solape = None
+        for obj in self.lt:
+            if item.num_id == obj.num_id:
+                if item.ini < obj.fin and item.fin > obj.ini:
+                    solape = f"[ix:{obj.nn} {item.nn}] {item.ini} < {obj.fin} y {item.fin} > {obj.ini}"
+        if solape is None:
+            return False
+        else:
+            print(solape)
+            return True
+        
+    def agregar(self, item):
+        self.lt.append(item)
 
-a = Test(1)
-b = Test(2)
-c = Test(3)
-d = Test(4)
+mom = Test(0,0,100,100)
 
-lt = [a,b,c,d]
+f = Test(6,1,18,19)
+a = Test(1,1,10,15)
 
-if a.num_id in [x.num_id for x in lt]:
-    print("sis")
+b = Test(2, 1,16,17)
+c = Test(3, 1,17.5,19)
+d = Test(4,4,17,21)
+e = Test(5,4,22,23)
+
+g = Test(7,4,18,22)
+#mom.agregar(a)
+mom.agregar(b)
+mom.agregar(c)
+mom.agregar(d)
+mom.agregar(e)
+mom.agregar(f)
+
+mom.solape(g)
+mom.solape(a)
+# if a.num_id in [x.num_id for x in lt]:
+#     print("sis")
+# else:
+#     print("non") 
+
+tiempo1 = datetime.strptime("19:45", "%H:%M")
+tiempo2 = datetime.strptime("19:55", "%H:%M")
+suma = timedelta(minutes=30)
+total = tiempo1 + suma
+print(total)
+if tiempo1 > tiempo2:
+    print(tiempo1)
 else:
-    print("non") 
-
+    print(tiempo2)
