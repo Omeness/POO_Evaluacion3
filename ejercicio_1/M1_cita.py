@@ -45,8 +45,21 @@ class Cita:
         fecha = datetime.now().strftime("%d-%m-%YT%H:%M:%S")
         self._historial_eventos.append(f"[{fecha}] [{tipo}] [{detalle}]")
 
-    def fin_hora(self):
-        return f"Final del servicio: {self._fin} hrs."
+    @property
+    def profesional(self):
+        return self.__profesional
+    
+    @property
+    def cliente(self):
+        return self.__cliente
+    
+    @property
+    def inicio(self):
+        return self._inicio
+    
+    @property
+    def fin(self):
+        return self._fin
 
     def asignar_servicio(self, servicio: Servicio):
         if self._estado != "creada":
@@ -101,5 +114,4 @@ print(c.confirmar("www", g))
 print(c.cancelar("dd"))
 
 print(c._inicio)
-print(c.fin_hora())
 c.ver_eventos()
