@@ -1,5 +1,3 @@
-
-
 class Agenda:
     def __init__(self):
         self._citas = []

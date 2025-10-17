@@ -2,10 +2,10 @@ from abc import ABC, abstractmethod
 
 
 class Servicio(ABC):
+    """La duracion debe ser un numero entero mayor a cero"""
 
     @abstractmethod
     def duracion_min(self)-> int:
-        """La duracion debe ser un numero entero mayor a cero"""
         pass
 
 

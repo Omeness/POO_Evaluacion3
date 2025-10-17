@@ -5,6 +5,7 @@ class Cita:
     _id_cita = 10
 
     def __init__(self, cliente:str, profesional:str, inicio: str, estado="creada"):
+        "ahora ya se para que son los docstrings AJAJAJ"
 
         # Validaciones de los atributos
         if not cliente.split(): 
@@ -60,7 +61,16 @@ class Cita:
     @property
     def servicio(self):
         return self._servicio
+    
+    @property
+    def duracion_min(self):
+        return self._duracion_min
+    
+    @property
+    def estado(self):
+        return self._estado
 
+    # Asignar servicio solo a citas 'creadas' una vez confirmada la cita no se puede cambiar el servicio
     def asignar_servicio(self, servicio: object):
         if self._estado != "creada":
             raise Exception(f"No se puede asignar servicio a una cita en estado'{self._estado}'")
@@ -77,6 +87,7 @@ class Cita:
         self._servicio = servicio
         return f"Se ha asignado el servicio {servicio} desde las {inicio} hrs. a las {fin.strftime("%H:%M")} hrs."
 
+    # Para cambiar el estado, corroboramos el estado y el solape con otras citas en la agenda
     def confirmar(self, motivo, agenda: object):
         if self._estado != "creada":
             raise Exception(f"No se puede confirmar una cita en estado '{self._estado}'")
@@ -89,7 +100,8 @@ class Cita:
         detalle = f"ID Cita: {self.id_cita} | Cliente: {self.__cliente} | Motivo: {motivo}"
         self._registrar_evento(f"Confirmacion cita", detalle)
         return f"Cita {self.id_cita} confirmada con exito."
-        
+    
+    # Cancelamos la cita
     def cancelar(self, motivo):
         if self._estado == "cancelada":
             return "La cita ya esta cancelada"
@@ -99,6 +111,7 @@ class Cita:
             self._estado = "cancelada"
             return f"Cita {self.id_cita} cancelada con exito."
 
+    # Mostrar los eventos del historial
     def ver_eventos(self):
         for evento in self._historial_eventos:
             print(evento)

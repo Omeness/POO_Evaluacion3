@@ -58,3 +58,26 @@ if tiempo1 > tiempo2:
     print(tiempo1)
 else:
     print(tiempo2)
+
+print("\n-----\n")
+
+
+# fecha en formato legible (string)
+fecha_str = datetime.strptime("11-10-2025", "%d-%m-%Y").strftime("%d-%m-%Y")
+print(fecha_str)
+
+fecha = datetime.strptime("16-10-2025", "%d-%m-%Y")
+
+lunes = datetime.strptime("13-10-2025", "%d-%m-%Y")
+domingo = lunes + timedelta(days=6)
+
+print(lunes)
+print(domingo)
+
+if fecha > lunes and fecha < domingo:
+    print("fecha dentro de la semana")
+else:
+    print("no en semana")
+
+print(fecha.strftime("%m"))
+
