@@ -1,24 +1,3 @@
-# Modelo 3 — Reserva
-# Propósito: solicitud/ocupación de una cancha en un intervalo.
-# Datos mínimos
-# • id_reserva (único).
-# • cancha (referencia a Cancha).
-# • cliente (string no vacío).
-# • inicio (datetime).
-# • fin (datetime; inicio < fin).
-# • estado ∈ {creada, confirmada, cancelada, no_show} (por defecto creada).
-# • importe (solo lectura; fijado por cotización/confirmación).
-# • desglose_tarifa (solo lectura; lista de tramos con {desde, hasta, tipo_tarifa, minutos,
-# valor_hora, subtotal} cuando aplique).
-# • historial_eventos (solo lectura): {timestamp, tipo, detalle[, monto]}.
-# Operaciones (enunciado)
-# • cotizar(tarifa) → calcula y fija importe (solo lectura) y desglose_tarifa; evento cotizada.
-# • confirmar(motivo) → valida solape y mantención; cambia a confirmada; evento.
-# • cancelar(motivo, politica) → calcula penalización (politica.penalizacion(horas_previas,
-# importe)), cambia a cancelada; evento con monto.
-# • marcar_no_show(motivo) → cambia a no_show (si procede); evento (y penalización si
-# existe política para inasistencia)
-
 from datetime import datetime
 
 

@@ -1,13 +1,3 @@
-# Modelo 2 — Franja
-# Propósito: bloque horario a cubrir en un día específico.
-# Atributos (obligatorios):
-# • dia (fecha o nombre de día dentro de la semana)
-# • hora_inicio (HH:MM)
-# • hora_fin (HH:MM) — debe ser > hora_inicio
-# Derivados (solo lectura):
-# • duracion_horas = hora_fin − hora_inicio
-
-
 from datetime import datetime
 
 

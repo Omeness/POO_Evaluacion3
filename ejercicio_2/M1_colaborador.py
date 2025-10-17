@@ -1,15 +1,3 @@
-# Modelo 1 — Colaborador
-# Propósito: persona elegible para cubrir franjas del plan semanal.
-# Datos mínimos
-# • id_colaborador (único)
-# • nombre (string no vacío)
-# • horas_semana_max (entero > 0)
-# • preferencia ∈ {manana, tarde, indistinto}
-# • no_disponible[] (lista de intervalos {dia, hora_inicio, hora_fin})
-# • historial_eventos (solo lectura: {timestamp, tipo, detalle})
-# Derivados (solo lectura):
-# • horas_asignadas_semana (suma de horas de sus turnos en el plan vigente)
-
 from datetime import datetime
 
 

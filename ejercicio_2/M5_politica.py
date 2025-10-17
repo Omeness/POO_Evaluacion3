@@ -2,14 +2,6 @@ from abc import ABC, abstractmethod
 from typing import List
 
 
-# Propósito: definir el criterio de asignación (abstracción/polimorfismo).
-# Contrato (abstracta):
-# • asignar(semana, colaboradores, franjas) -> List<TurnoAsignado>
-# Subtipos (al menos uno para la evaluación):
-
-
-
-
 class PoliticaTurno(ABC):
     @abstractmethod
     def asignar(self, semana, colaboradores, franjas)-> List:

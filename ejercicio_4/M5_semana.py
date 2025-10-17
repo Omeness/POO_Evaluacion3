@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from .validaciones import sumar_pts
 
 class Semana:
     def __init__(self, inicio, fin):
@@ -12,6 +12,7 @@ class Semana:
 
         formato fecha: 'dd-mm-yyyy'
         """
+        
         if inicio > fin:
             raise Exception(f"La semana debe empezar antes del {fin} o terminar despues del {inicio}")
         
@@ -28,10 +29,6 @@ class Semana:
     def fin(self):
         return self.__fin
 
-    def ver(self):
-        for i in self._retiros:
-            print(i)
-
     def bono_semanal(self):
         suscriptores = []
         for sus in self._retiros:
@@ -39,7 +36,7 @@ class Semana:
             if retiro_semanal >= 3 and sus not in suscriptores:
                 suscriptores.append(sus)
         for sub in suscriptores:
-            sub._sumar_pts = 10
+            sumar_pts(sub,10)
 
     def __str__(self):
         return f"Semana del {self.__inicio.strftime("%d-%m-%Y")} al {self.__fin.strftime("%d-%m-%Y")}"

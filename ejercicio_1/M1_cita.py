@@ -89,6 +89,8 @@ class Cita:
 
     # Para cambiar el estado, corroboramos el estado y el solape con otras citas en la agenda
     def confirmar(self, motivo, agenda: object):
+        """Antes de confirmar se debe asignar un servicio"""
+        
         if self._estado != "creada":
             raise Exception(f"No se puede confirmar una cita en estado '{self._estado}'")
         if self._servicio is None:
@@ -113,5 +115,6 @@ class Cita:
 
     # Mostrar los eventos del historial
     def ver_eventos(self):
+        print(f"\n--- Historial cita {self.id_cita} ---\n")
         for evento in self._historial_eventos:
             print(evento)

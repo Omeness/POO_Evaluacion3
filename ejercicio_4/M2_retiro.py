@@ -1,19 +1,9 @@
-# Modelo 2 — Retiro
-# Propósito: registro de material entregado para reciclaje.
-# Datos mínimos
-# • id_retiro (único)
-# • suscriptor (ref. a Suscriptor)
-# • fecha (datetime)
-# • material (ref. a Material)
-# • kg (decimal > 0)
-# • estado ∈ {registrado, validado, rechazado} (por defecto registrado)
-# • historial_eventos (solo lectura): {timestamp, tipo, detalle}
-# Derivados (solo lectura)
-# • puntos_calculados (≥ 0; definido al validar)
-# • fecha_ultimo_cambio (último timestamp del historial)
-
 from datetime import datetime
 from math import trunc
+from .M5_semana import Semana
+from .M3_material import Material
+from .M1_suscriptor import Suscriptor
+from .validaciones import fecha_en_rango, registrar_retiro, cambiar_estado, sumar_pts
 
 
 class Retiro:
@@ -42,56 +32,43 @@ class Retiro:
     def estado(self):
         return self._estado
     
-    def __fecha_en_rango(self, semana:object):
-        'Verifica que la fecha de retiro esté dentro del rango de la semana'
-
-        if self._estado == "rechazado":
-            raise Exception("No se puede verificar. El retiro esta rechazado")
-        
-        if self.fecha > semana.inicio and self.fecha < semana.fin:
-            return True
-        return False
-    
-    def __registrar_retiro(self, semana:object, suscriptor:object):
-        if suscriptor.estado == "inhabilitado":
-            raise Exception("No se pueden registrar suscriptores inhabilitados")
-        semana._retiros.append(suscriptor)
-    
-    def hacer_retiro(self, suscriptor: object, material:object, peso:float, semana: object) -> str:
+    def validar_retiro(self, suscriptor:Suscriptor, material:Material, peso:float, semana:Semana) -> str:
         """
         Si el peso excede el maximo el retiro cambiará a rechazado y el suscriptor quedará 
         inhabilitado.
          
         Se deberá rectificar el peso para habilitar al suscriptor.
         """
+        # Meterial verifica que el peso sea mayor a cero
         id_s = suscriptor.id_sub
-        if peso <= 0: 
-            return "El peso debe ser mayor a cero"
+        if self._estado == "rechazado":
+            raise Exception("No se puede verificar. El retiro esta rechazado")
         if suscriptor.estado == "inhabilitado":
             raise Exception("El suscriptor esta inhabilitado")
         if material.max_kg_por_bolsa() < peso:
             self._estado = "rechazado"
-            suscriptor.cambiar_estado = "Retiro rechazado"
+            cambiar_estado(suscriptor,"Retiro rechazado")
             self._registrar_evento("Retiro Rechazado", f"Suscriptor ID : {id_s} | Peso excede el limite")
             raise Exception("El peso excede el maximo permitido. Se rechazara el retiro")
-        if not self.__fecha_en_rango(semana):
+        if not fecha_en_rango(self.fecha, semana):
             return "La fecha no esta dentro del rango de la semana"
         
         self._estado = "validado"
 
         puntos = trunc(material.puntos(peso))
-        suscriptor._sumar_pts = puntos
+        sumar_pts(suscriptor, puntos)
         fecha = self.fecha.strftime("%d-%m-%Y")
         
-        self.__registrar_retiro(semana,suscriptor)
-        suscriptor.registrar_evento("Retiro realizado", f"Material: {material} | Fecha: {fecha}")
+        registrar_retiro(semana,suscriptor)
+        suscriptor._registrar_evento("Retiro realizado", f"Material: {material} | Fecha: {fecha}")
         self._registrar_evento("Retiro Validado", f"Suscriptor ID : {id_s} | Material: {material} | Fecha: {fecha}")
         return "Retiro realizado con exito"
     
-    def rectificar_peso(self, suscriptor: object, material:object, peso:float, semana: object):
+    def rectificar_peso(self, suscriptor:Suscriptor, material:Material, peso:float, semana:Semana):
         """
         Solo se pueden rectificar retiros rechazados y/o suscriptores inhabilitados
         """
+
         if self._estado != "rechazado":
             return "Solo se pueden rectificar retiros rechazados"
         if suscriptor.estado == "habilitado":
@@ -100,11 +77,19 @@ class Retiro:
             return(f"El peso sigue exediendo el maximo de {material.max_kg_por_bolsa()}. "
                             f"Intente de nuevo")
         
-        suscriptor.cambiar_estado = "Rectificacion peso retiro"
+        cambiar_estado(suscriptor,"Rectificacion peso retiro")
         self._estado = "validado"
-        self.hacer_retiro(suscriptor, material, peso, semana)
+        self.validar_retiro(suscriptor, material, peso, semana)
         return "Retiro rectificado con exito"
         
-    def ver(self):
-        for i in self._historial_eventos:
-            print(i)
+    def eventos_retiro(self):
+        if not self._historial_eventos:
+            print("\nNo hay registros todavia")
+        else:
+            print("\t--- Historial Retiros ---")
+            print(f"Total registros: {len(self._historial_eventos)}\n")
+            for evento in self._historial_eventos:
+                print(evento)
+            print("\n* Fin registros *")
+
+

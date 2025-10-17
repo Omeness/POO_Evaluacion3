@@ -20,6 +20,7 @@ class Agenda:
             return True
                 
     def agregar(self, cita: object):
+        """Para agregar una cita primero se debe asignar un servicio y confirmar"""
         # NOTE: La validacion de solapamiento se hace desde Cita.confirmar()
         # Aqui solo se valida que la cita este confirmada
 
@@ -29,6 +30,8 @@ class Agenda:
             raise Exception(f"La cita con ID: {cita.id_cita}  ya esta registrada")
 
         self._citas.append(cita)
+        detalle = f"Desde: {cita.inicio.strftime("%H:%M")} hrs. Hasta: {cita.fin.strftime("%H:%M")} hrs."
+        cita._registrar_evento("Cita agregada la agenda", detalle)
         return "Cita agendada con exito"
     
     def ver_agenda(self):
