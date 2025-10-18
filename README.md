@@ -26,4 +26,5 @@ En el main está la ejecucion de las clases como script plano (como las evaluaci
 El ejercicio 4 pensé que lo había entendido, pero cuando ya lo había terminado fui a ver la rubrica y creo que hice otra cosa equisde. Espero que disfrute mi reinterpretacion del ejercicio jajn't
 
 La interfaz es del ejercicio 4, tiene un par de opciones y funciona bien dentro de lo que probé.
+
 ~~ya se que la "rectificacion de retiros" que inventé está :/ pero insisto (el tiempo).~~
