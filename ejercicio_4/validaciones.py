@@ -8,7 +8,7 @@ fueran de manera indirecta
 def fecha_en_rango(fecha, semana:object):
     """Verifica que la fecha esté dentro del rango de la semana"""
 
-    if fecha > semana.inicio and fecha < semana.fin:
+    if fecha >= semana.inicio and fecha <= semana.fin:
         return True
     return False
 

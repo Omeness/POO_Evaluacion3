@@ -42,7 +42,7 @@ class Retiro:
         # Meterial verifica que el peso sea mayor a cero
         id_s = suscriptor.id_sub
         if self._estado == "rechazado":
-            raise Exception("No se puede verificar. El retiro esta rechazado")
+            raise Exception("No se puede validar. El retiro esta rechazado")
         if suscriptor.estado == "inhabilitado":
             raise Exception("El suscriptor esta inhabilitado")
         if material.max_kg_por_bolsa() < peso:
@@ -70,11 +70,11 @@ class Retiro:
         """
 
         if self._estado != "rechazado":
-            return "Solo se pueden rectificar retiros rechazados"
+            raise Exception("Solo se pueden rectificar retiros rechazados")
         if suscriptor.estado == "habilitado":
-            return "Solo se pueden rectificar retiros de suscriptores inhabilitados"
+            raise Exception("Solo se pueden rectificar retiros de suscriptores inhabilitados")
         if material.max_kg_por_bolsa() < peso:
-            return(f"El peso sigue exediendo el maximo de {material.max_kg_por_bolsa()}. "
+            raise Exception(f"El peso sigue exediendo el maximo de {material.max_kg_por_bolsa()}. "
                             f"Intente de nuevo")
         
         cambiar_estado(suscriptor,"Rectificacion peso retiro")
@@ -86,10 +86,8 @@ class Retiro:
         if not self._historial_eventos:
             print("\nNo hay registros todavia")
         else:
-            print("\t--- Historial Retiros ---")
+            print(f"\t--- Historial Retiros {self.fecha.strftime("%d-%m-%Y")} ---")
             print(f"Total registros: {len(self._historial_eventos)}\n")
             for evento in self._historial_eventos:
                 print(evento)
             print("\n* Fin registros *")
-
-

@@ -37,6 +37,10 @@ class Semana:
                 suscriptores.append(sus)
         for sub in suscriptores:
             sumar_pts(sub,10)
+        if not suscriptores is None:
+            return f"Bono aplicado. IDs beneficiados: {[i.id_sub for i in suscriptores]}"
+        else:
+            return "No hubo beneficiados esta semana"
 
     def __str__(self):
         return f"Semana del {self.__inicio.strftime("%d-%m-%Y")} al {self.__fin.strftime("%d-%m-%Y")}"

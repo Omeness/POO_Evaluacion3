@@ -7,9 +7,13 @@ class Suscriptor:
     def __init__(self, direccion:str, estado="habilitado"):
         """titular del servicio y acumulador de puntos."""
 
+        ESTADOS = ("habilitado", "inhabilitado")
+
         # Validaciones
         if not direccion.split():
             raise Exception("La direccion no puede estar vacia")
+        if estado not in ESTADOS:
+            raise Exception("El estado debe ser 'habilitado' o 'inhabilitado'")
 
         self.id_sub = type(self)._id_sub
         type(self)._id_sub += 1
@@ -47,3 +51,29 @@ class Suscriptor:
 
     def __str__(self):
         return f'ID Suscriptor: {self.id_sub}'
+    
+if __name__ == "__main__":
+            
+    suscriptores = []#[Suscriptor("ddd"), Suscriptor("gggg"), Suscriptor("ffd")]
+    direccion = input("sasdsd: ")
+    a =Suscriptor(direccion)
+    b =Suscriptor(direccion)
+    c=Suscriptor(direccion)
+
+    suscriptores.append(a)
+    suscriptores.append(b)
+    suscriptores.append(c)
+    for i in suscriptores:
+        print(i.id_sub)
+        print(i.estado)
+
+    ID = int(input("Ingresa el ID del suscriptor: "))
+    suscriptor = None
+    for sus in suscriptores:
+        if sus.id_sub == ID:
+            suscriptor = sus
+            break
+    if suscriptor is None:
+        print(f"No se encontro al suscriptor '{ID}'")
+    else:
+        print("Total puntos:",suscriptor.saldo_pts)
