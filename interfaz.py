@@ -6,17 +6,18 @@ from ejercicio_4.M5_semana import Semana
 from funciones import menu, limpiar_pantalla, continuar, buscar_suscriptor, buscar_retiro
 
 
-lista_sus = [Suscriptor("ddd"), Suscriptor("gggg"), Suscriptor("ffd", "inhabilitado")]
+lista_sus = [Suscriptor("El mirador #213"), Suscriptor("El canelo #453"), Suscriptor("Miraflores #456")]
 
 agenda = Semana("13-10-2025", "19-10-2025")
-semana = [
+
+retiros = [
     Retiro("13-10-2025"),
     Retiro("14-10-2025"),
     Retiro("15-10-2025"),
     Retiro("16-10-2025"),
     Retiro("17-10-2025"),
-    Retiro("18-10-2025", 'validado'),
-    Retiro("19-10-2025", 'rechazado')
+    Retiro("18-10-2025"),
+    Retiro("19-10-2025")
     ]
 
 while True:
@@ -25,9 +26,10 @@ while True:
     try:
         while True:
             opcion = int(input("Ingresa el numero de opcion: "))
-            if opcion < 1 or opcion > 8:
+
+            if opcion < 1 or opcion > 10:
                 limpiar_pantalla()
-                print("\n[Error] Opcion invalida, ingresa un numero del 1 al 8\n")
+                print("\n[Error] Opcion invalida, ingresa un numero del 1 al 10\n")
                 menu()
             else:
                 break
@@ -83,7 +85,7 @@ while True:
             try:
                 print(agenda)
                 dia = datetime.strptime(f"{input("Ingresa la fecha del dia: ")}", "%d-%m-%Y")
-                retiro = buscar_retiro(dia, semana)
+                retiro = buscar_retiro(dia, retiros)
                 
                 if retiro is None:
                     raise Exception("La fecha no esta en el rango de la semana")
@@ -92,8 +94,8 @@ while True:
                     raise Exception("El retiro esta rechazado. Rectificar para cambiar.")
 
                 while True:
-                    opcion = int(input("Ingresa el ID del suscriptor: "))
-                    sus = buscar_suscriptor(opcion, lista_sus)
+                    id_susb = int(input("Ingresa el ID del suscriptor: "))
+                    sus = buscar_suscriptor(id_susb, lista_sus)
                     if sus is None:
                         print("El suscriptor no esta inscrito")
                         print(f"Suscriptores disponibles: {[i.id_sub for i in lista_sus]}")
@@ -105,22 +107,22 @@ while True:
                 
                 while True:
                     materiales = ("plastico", "vidrio", "papel y carton")
-                    opcion = input(f"Ingresa el material\n"
+                    material = input(f"Ingresa el material\n"
                                 f"Opciones: plastico, vidrio, papel y carton: ").lower()
-                    if opcion not in materiales:
+                    if material not in materiales:
                         print("Opcion invalida, elige una de las tres opciones")
                     else:
                         break
                     
-                if opcion == "plastico":
-                    opcion = Plastico()
-                elif opcion == "vidrio":
-                    opcion = Vidrio()
+                if material == "plastico":
+                    material = Plastico()
+                elif material == "vidrio":
+                    material = Vidrio()
                 else:
-                    opcion = PapelCarton()
+                    material = PapelCarton()
 
                 peso = float(input("Ingresa el peso (decimal > 0): "))
-                print(retiro.validar_retiro(sus, opcion, peso, semana)) 
+                print(retiro.validar_retiro(sus, material, peso, agenda)) 
                 continuar()
 
             except Exception as e:
@@ -128,33 +130,143 @@ while True:
                 continuar()
 
         if opcion == 5:
-            print("Todavia no se ha implementado esta opcion")
-            print("Saliendo del script...")
-            break
+            limpiar_pantalla()
+            print("=== Opcion 5 ===")
+            print("Rectificar retiro\n")
+
+            try:
+                dia = datetime.strptime(f"{input("Ingresa la fecha del dia: ")}", "%d-%m-%Y")
+                retiro = buscar_retiro(dia, retiros)
+                
+                if retiro is None:
+                    raise Exception("La fecha no esta en el rango de la semana")
+
+                while True:
+                    id_susb = int(input("Ingresa el ID del suscriptor: "))
+                    sus = buscar_suscriptor(id_susb, lista_sus)
+                    if sus is None:
+                        print("El suscriptor no esta inscrito")
+                        print(f"Suscriptores disponibles: {[i.id_sub for i in lista_sus]}")
+                    else:
+                        break
+                
+                while True:
+                    materiales = ("plastico", "vidrio", "papel y carton")
+                    material = input(f"Ingresa el material\n"
+                                f"Opciones: plastico, vidrio, papel y carton: ").lower()
+                    if material not in materiales:
+                        print("Opcion invalida, elige una de las tres opciones")
+                    else:
+                        break
+                    
+                if material == "plastico":
+                    material = Plastico()
+                elif material == "vidrio":
+                    material = Vidrio()
+                else:
+                    material = PapelCarton()   
+
+                peso = float(input("Ingresa el peso (decimal > 0): "))
+
+                try:
+                    print(retiro.rectificar_peso(sus, material, peso, agenda))
+                    continuar()
+
+                except Exception as e:
+                    print(e)
+                    continuar()
+                
+            except Exception as e:
+                print(e) 
+                continuar()          
 
         if opcion == 6:
-            print("Todavia no se ha implementado esta opcion")
-            print("Saliendo del script...")
-            break
+            limpiar_pantalla()
+            print("=== Opcion 6 ===")
+            print("Ver semana\n")
+
+            print(agenda,"\n")
+
+            for i in retiros:
+                print(f"{i.fecha.strftime("%A"):10}",i.fecha.strftime("%d-%m-%Y"))
+            continuar()  
 
         if opcion == 7:
-            print("Todavia no se ha implementado esta opcion")
-            print("Saliendo del script...")
-            break
+            limpiar_pantalla()
+            print("=== Opcion 7 ===")
+            print("Aplicar Bono\n")
+
+            print("Seguro que quieres aplicar el bono?")
+            bono = input("'s' para aplicar, cualquier otra letra para cancelar: ").lower()
+            if bono == 's':
+                print(agenda.bono_semanal())
+                continuar()
+            else:
+                print("Bono cancelado")
+                continuar()
 
         if opcion == 8:
-            print("Todavia no se ha implementado esta opcion")
-            print("Saliendo del script...")
-            break
+            limpiar_pantalla()
+            print("=== Opcion 8 ===")
+            print("Ver registros\n")
 
+            print("Ver registros de fecha(1) o suscriptor(2)?")
+            op = input("Elige una opcion: ")
+
+            if op == '1':
+                while True:
+                    dia = datetime.strptime(f"{input("Ingresa la fecha del dia: ")}", "%d-%m-%Y")
+                    retiro = buscar_retiro(dia, retiros)
+                    if retiro is None:
+                        print("La fecha no esta en rango")
+                        print(agenda)
+                    else:
+                        break
+                retiro.eventos_retiro()
+                continuar()
+
+            elif op == '2':
+                while True:
+                    op_id = int(input("Ingresa el ID del suscriptor: "))
+                    sus = buscar_suscriptor(op_id, lista_sus)
+                    if sus is None:
+                        print("El suscriptor no esta inscrito")
+                        print(f"Suscriptores disponibles: {[i.id_sub for i in lista_sus]}")
+                    else:
+                        break
+                sus.eventos_suscriptor()
+                continuar()
+            
+            else:
+                print("Opcion invalida")
+                continuar()
+                    
         if opcion == 9:
-            print("Todavia no se ha implementado esta opcion")
-            print("Saliendo del script...")
-            break
+            limpiar_pantalla()
+            print("=== Opcion 9 ===")
+            print("Ver todos los registro\n")
+
+            check = None
+            for i in retiros:
+                if i._historial_eventos:
+                    i.eventos_retiro()
+                    print()
+                    check = 1
+
+            for i in lista_sus:
+                if i._historial_eventos:
+                    i.eventos_suscriptor()
+                    print()
+                    check = 1
+
+            if check is None: print("No hay registros")
+            continuar()
         
         if opcion == 10:
-            print("Todavia no se ha implementado esta opcion")
-            print("Saliendo del script...")
+            limpiar_pantalla()
+            print("-----------------------")
+            print("\nSee you in space cowboy\n")
+            input("Saliendo...")
             break
 
     except ValueError:

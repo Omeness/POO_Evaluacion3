@@ -24,19 +24,18 @@ def continuar():
     print("\nVolviendo al menu...")
     input("Enter para continuar")
 
-def buscar_suscriptor(id_suscriptor, lista):
+def buscar_suscriptor(id_suscriptor, lista_suscriptores):
     suscriptor = None
-    for sus in lista:
+    for sus in lista_suscriptores:
         if sus.id_sub == id_suscriptor:
             suscriptor = sus
             break
     return suscriptor
 
-def buscar_retiro(fecha, semana):
+def buscar_retiro(fecha, lista_retiros):
     retiro = None
-    for r in semana:
+    for r in lista_retiros:
         if fecha == r.fecha:
             retiro = r
             break
     return retiro
-                        

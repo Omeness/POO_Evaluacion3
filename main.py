@@ -137,6 +137,7 @@ except Exception as e:
 
 print("\n### Ahora tenemos que rectificar el retiro")
 print("### Intentaremos con un suscriptor que no este inhabilitado\n")
+# omg ya se que esta es la peor manera de rectificar, pero insisto, no tenia tiempo TvT
 try:
     lunes.rectificar_peso(sus2, papel, 5, semana)
 except Exception as e:

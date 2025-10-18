@@ -67,6 +67,8 @@ class Retiro:
     def rectificar_peso(self, suscriptor:Suscriptor, material:Material, peso:float, semana:Semana):
         """
         Solo se pueden rectificar retiros rechazados y/o suscriptores inhabilitados
+        
+        Es la peor forma que encontre jjj
         """
 
         if self._estado != "rechazado":
